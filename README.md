@@ -140,21 +140,29 @@ Most things are prefixed with prefixes being generally an acronym of the asset t
 
 <a name="base-asset-name"></a>
 <a name="1.1"></a>
-### 1.1 Base Asset Name - `Prefix_BaseAssetName_Variant_Suffix` ![#](https://img.shields.io/badge/lint-partial_support-yellow.svg)
+### 1.1 Base Asset Name - `Prefix_Category_Type_Variation_Suffix` ![#](https://img.shields.io/badge/lint-partial_support-yellow.svg)
 
-All assets should have a _Base Asset Name_. A Base Asset Name represents a logical grouping of related assets. Any asset that is part of this logical group should follow the standard of  `Prefix_BaseAssetName_Variant_Suffix`.
+There are rules for naming assets that builds upon the naming of folders. So it is important that the name of the folder/location of the asset is appropriate. The asset name consists of multiple parts separated by `_` with some of the parts being optional or conditional.
 
-Keeping the pattern `Prefix_BaseAssetName_Variant_Suffix` and in mind and using common sense is generally enough to warrant good asset names. Here are some detailed rules regarding each element.
+The asset name is broadly divided into 3 parts, the `Prefix`, `BaseAssetName` and `Suffix`.
 
 `Prefix` and `Suffix` are to be determined by the asset type through the following [Asset Name Modifier](#asset-name-modifiers) tables.
 
-`BaseAssetName` should be determined by a short and easily recognizable name related to the context of this group of assets. For example, if you had a character named Bob, all of Bob's assets would have the `BaseAssetName` of `Bob`.
+The `BaseAssetName` consists of one or more parts formatted like this `Category_Type_Variation` where `Category` is required and should be the singular inflection of the name of the folder it is located in *(when inside a type folder, it uses the name of the parent folder)*. So an asset inside the `Trees` folder will use `Tree` as its category for example.
+ 
+`Type` and `Variation` are used to further describe the particular asset, essentially you narrow down what the asset is further by first defining what `Type` it is and then adding variations, starting with the most defining feature *(following any pre existing conventions)* to group assets that share some distinctive trait.
 
-For unique and specific variations of assets, `Variant` is either a short and easily recognizable name that represents logical grouping of assets that are a subset of an asset's base name. For example, if Bob had multiple skins these skins should still use `Bob` as the `BaseAssetName` but include a recognizable `Variant`. An 'Evil' skin would be referred to as `Bob_Evil` and a 'Retro' skin would be referred to as `Bob_Retro`.
+The aim isn’t to describe every asset in detail, but to separate the assets that share some common feature into groups. Often you would want to add a type to classify the asset to some degree, building on the previous example we have `Tree_Birch` and `Tree_Fir` as examples of types. Then when you have different versions of assets of the same type you add a variation description to it like for example `Tree_Fir_Dead`.
 
-For unique but generic variations of assets, `Variant` is a two digit number starting at `01`. For example, if you have an environment artist generating nondescript rocks, they would be named `Rock_01`, `Rock_02`, `Rock_03`, etc. Except for rare exceptions, you should never require a three digit variant number. If you have more than 100 assets, you should consider organizing them with different base names or using multiple variant names.
+You should also be aware of the variations in use and use them on all assets within the `Category` that share the same trait, even if there are only a single instance with that trait within a type. You should also try to reuse the same variation as other assets when the trait falls into an existing group, instead of making a unique variant name. This makes it possible to find all assets that share that trait when searching for assets. Consider renaming other assets that fall into the same group when adding a new variant.
 
-Depending on how your asset variants are made, you can chain together variant names. For example, if you are creating flooring assets for an Arch Viz project you should use the base name `Flooring` with chained variants such as `Flooring_Marble_01`, `Flooring_Maple_01`, `Flooring_Tile_Squares_01`.
+If the type/variant name uses multiple words you must use PascalCase instead of adding space or underscores like this`Tree_Birch_AxCut`.
+
+If you don’t have a type that makes sense, you can also use a 2 digit number to represent the type like this `Tree_01`, `Tree_02` and so forth.
+
+Same thing goes if there are multiple of the same type, but not any specific variation that is suitable. `Tree_Birch_01`, `Tree_Birch_02` and so forth.
+
+Except for rare exceptions, you should never require a three digit variant number. If you have more than 100 assets, you should consider organizing them into different types or separate them into more variations, or maybe even remove some assets, if they are so similar that they don't belong in different types or groups you probably have too many of them.
 
 <a name="1.1-examples"></a>
 #### 1.1 Examples
@@ -173,9 +181,9 @@ Depending on how your asset variants are made, you can chain together variant na
 
 | Asset Type              | Asset Name                                                 |
 | ----------------------- | ---------------------------------------------------------- |
-| Static Mesh (01)        | S_Rock_01                                                  |
-| Static Mesh (02)        | S_Rock_02                                                  |
-| Static Mesh (03)        | S_Rock_03                                                  |
+| Static Mesh (01)        | SM_Rock_01                                                  |
+| Static Mesh (02)        | SM_Rock_02                                                  |
+| Static Mesh (03)        | SM_Rock_03                                                  |
 | Material                | M_Rock                                                     |
 | Material Instance (Snow)| MI_Rock_Snow                                               |
 
@@ -225,7 +233,7 @@ When naming an asset, use these tables to determine the prefix and suffix to use
 | Level (Gameplay)        |            | _Gameplay  |                                  |
 | Blueprint               | BP_        |            |                                  |
 | Material                | M_         |            |                                  |
-| Static Mesh             | S_         |            | Many use SM_. We use S_.         |
+| Static Mesh             | SM_        |            |                                  |
 | Skeletal Mesh           | SK_        |            |                                  |
 | Texture                 | T_         | _?         | See [Textures](#anc-textures)    |
 | Particle System         | PS_        |            |                                  |
@@ -275,7 +283,7 @@ When naming an asset, use these tables to determine the prefix and suffix to use
 | ----------------------- | ---------- | ---------- | -------------------------------- |
 | Blueprint               | BP_        |            |                                  |
 | Blueprint Component	  | BP_	       | Component  | I.e. BP_InventoryComponent       |
-| Blueprint Function Library | BPFL_   |            |                                  |
+| Blueprint Function Library |         | Library    |                                  |
 | Blueprint Interface     | BPI_       |            |                                  |
 | Blueprint Macro Library | BPML_      |            | Do not use macro libraries if possible. |
 | Enumeration             | E          |            | No underscore.                   |
@@ -1350,7 +1358,7 @@ For example, `InteractionComponent_Overview_Demo`, `ExplosionKit_Demo`.
 
 <a name="7"></a>
 <a name="textures"></a>
-## 7. Textures ![#](https://img.shields.io/badge/lint-unsupported-red.svg)
+## 7. Textures ![#](https://img.shields.io/badge/lint-partial_support-yellow.svg)
 
 This section will focus on Texture assets and their internals.
 
@@ -1366,7 +1374,7 @@ This section will focus on Texture assets and their internals.
 
 <a name="7.1"></a>
 <a name="textures-dimensions"></a>
-### 7.1 Dimensions Are Powers of 2 ![#](https://img.shields.io/badge/lint-unsupported-red.svg)
+### 7.1 Dimensions Are Powers of 2 ![#](https://img.shields.io/badge/lint-supported-green.svg)
 
 All textures, except for UI textures, must have its dimensions in multiples of powers of 2. Textures do not have to be square.
 
@@ -1382,7 +1390,7 @@ For example, if a project's texture density is 8 pixel per 1 unit, a texture tha
 
 <a name="7.3"></a>
 <a name="textures-max-size"></a>
-### 7.3 Textures Should Be No Bigger than 8192 ![#](https://img.shields.io/badge/lint-unsupported-red.svg)
+### 7.3 Textures Should Be No Bigger than 8192 ![#](https://img.shields.io/badge/lint-supported-green.svg)
 
 No texture should have a dimension that exceeds 8192 in size, unless you have a very explicit reason to do so. Often, using a texture this big is simply just a waste of resources.
 
